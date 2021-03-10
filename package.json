@@ -1,0 +1,49 @@
+{
+  "name": "@stackbit/cli",
+  "version": "0.1.0",
+  "description": "Stackbit CLI",
+  "main": "dist/stackbit.js",
+  "types": "dist/stackbit.d.ts",
+  "bin": {
+    "stackbit": "./dist/cli.js"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "prettier": "prettier --write src",
+    "prepack": "npm test && npm run build",
+    "version-minor": "npm version minor -m \"bumped version to v%s\"",
+    "version-patch": "npm version patch -m \"bumped version to v%s\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackbit/stackbit-cli.git"
+  },
+  "keywords": [
+    "stackbit",
+    "cli",
+    "jamstack",
+    "ssg",
+    "cms",
+    "schema"
+  ],
+  "author": "Stackbit Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stackbit/stackbit-cli/issues"
+  },
+  "homepage": "https://github.com/stackbit/stackbit-cli#readme",
+  "dependencies": {
+    "@stackbit/sdk": "^0.1.1",
+    "chalk": "^4.1.0",
+    "jest": "^26.6.3",
+    "lodash": "^4.17.21",
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.5.3",
+    "typescript": "^4.2.3"
+  }
+}
