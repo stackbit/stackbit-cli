@@ -1,6 +1,6 @@
 {
   "name": "@stackbit/cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Stackbit CLI",
   "main": "dist/stackbit.js",
   "types": "dist/stackbit.d.ts",
