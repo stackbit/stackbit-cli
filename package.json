@@ -5,7 +5,7 @@
   "main": "dist/stackbit.js",
   "types": "dist/stackbit.d.ts",
   "bin": {
-    "stackbit": "./dist/cli.js"
+    "stackbit": "./dist/stackbit.js"
   },
   "scripts": {
     "test": "jest",
