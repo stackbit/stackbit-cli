@@ -24,7 +24,7 @@ export async function validate({ inputDir, configOnly, quiet }: ValidateOptions)
     if (configResult.errors.length === 0) {
         console.log(green('✔ configuration is valid'));
     } else {
-        console.group(red(`found ${configResult.errors.length} errors in configuration:`));
+        console.group(red(`found ${configResult.errors.length} errors in stackbit.yaml:`));
         configResult.errors.forEach((error) => {
             console.log(`${redCross} ${error.message}`);
         });
