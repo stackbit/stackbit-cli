@@ -57,7 +57,7 @@ interface ValidateContentOptions {
     skipUnmodeledContent: boolean;
 }
 
-export async function validateContent({ dirPath, config, quiet, skipUnmodeledContent }: ValidateContentOptions) {
+async function validateContent({ dirPath, config, quiet, skipUnmodeledContent }: ValidateContentOptions) {
     const quietConsole = getQuietConsole({ quiet });
     quietConsole.group(`loading and validating content from: ${dirPath}`);
 
