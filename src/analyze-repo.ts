@@ -14,7 +14,7 @@ export async function analyzeRepo({ repoUrl, branch, auth }: AnalyzeRepoOptions)
         return;
     }
 
-    console.log('Analyzing repository files in ...');
+    console.log(`Analyzing repository files in ${repoUrl} ...`);
     const fileBrowserAdapter = new GitHubFileBrowserAdapter({
         owner: parsedUrl.owner,
         repo: parsedUrl.repo,
