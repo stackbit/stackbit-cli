@@ -1,8 +1,9 @@
-import { matchSSG, FileSystemFileBrowserAdapter, FileBrowser, matchCMS, writeConfig } from '@stackbit/sdk';
-import { printCMSMatchResult, printSSGMatchResult } from './utils';
 import path from 'path';
 import chalk from 'chalk';
-import _ from 'lodash';
+import yaml from 'js-yaml';
+import { matchSSG, FileSystemFileBrowserAdapter, FileBrowser, matchCMS, writeConfig, Config, convertToYamlConfig } from '@stackbit/sdk';
+
+import { printCMSMatchResult, printSSGMatchResult } from './utils';
 
 export async function init({ inputDir, dryRun }: { inputDir: string; dryRun: boolean }) {
     console.log(`Analyzing files in ${chalk.blueBright(path.resolve(inputDir))} ...`);
@@ -18,13 +19,21 @@ export async function init({ inputDir, dryRun }: { inputDir: string; dryRun: boo
     const cmsMatchResult = await matchCMS({ fileBrowser });
     printCMSMatchResult(cmsMatchResult);
 
-    const stackbitYaml = _.omitBy(
-        {
-            stackbitVersion: '~0.3.0',
-            ssgName: ssgMatchResult.ssgName,
-            cmsName: cmsMatchResult?.cmsName
-        },
-        _.isNil
-    );
-    console.log(`\nstackbit.yaml: ${JSON.stringify(stackbitYaml, null, 2)}`);
+    const config: Config = {
+        stackbitVersion: '~0.3.0',
+        models: []
+    };
+
+    config.ssgName = ssgMatchResult.ssgName;
+    if (cmsMatchResult?.cmsName) {
+        config.cmsName = cmsMatchResult.cmsName;
+    }
+
+    if (dryRun) {
+        const yamlConfig = convertToYamlConfig({ config });
+        const yamlString = yaml.dump(yamlConfig);
+        console.log(`\nWould generate the following ${chalk.blueBright('stackbit.yaml')}:\n${chalk.cyanBright(yamlString)}`);
+    } else {
+        await writeConfig({ dirPath: inputDir, config });
+    }
 }
