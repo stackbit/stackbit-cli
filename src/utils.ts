@@ -1,6 +1,6 @@
-import { CMSMatchResult, SSGMatchResult } from '@stackbit/sdk';
 import chalk from 'chalk';
 import _ from 'lodash';
+import { CMSMatchResult, SSGMatchResult } from '@stackbit/sdk';
 
 export function printSSGMatchResult(ssgMatchResult: SSGMatchResult | null) {
     if (!ssgMatchResult) {
@@ -26,14 +26,8 @@ export function printCMSMatchResult(cmsMatchResult: CMSMatchResult | null) {
         return;
     }
     console.log(`Matched CMS: ${chalk.blueBright(cmsMatchResult.cmsName)}`);
-    if (cmsMatchResult.cmsDir === undefined) {
-        const possibleDirs = cmsMatchResult.options?.cmsDirs ? ` Possible folders: ${cmsMatchResult.options?.cmsDirs.join(', ')}` : '';
-        console.log('Could not identify CMS folder.' + possibleDirs);
-    } else {
-        const cmsDir = cmsMatchResult.cmsDir === '' ? '.' : cmsMatchResult.cmsDir;
-        console.log(`CMS directory: ${chalk.blueBright(`'${cmsDir}'`)}`);
-        const otherProps = _.omit(cmsMatchResult, ['cmsName', 'cmsDir', 'options']);
-        _.forEach(otherProps, (value, prop) => {
+    if (cmsMatchResult.cmsData !== undefined) {
+        _.forEach(cmsMatchResult.cmsData, (value, prop) => {
             console.log(`${prop}: ${chalk.blueBright(`'${value}'`)}`);
         });
     }

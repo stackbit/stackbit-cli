@@ -41,15 +41,17 @@ yargs(process.argv.slice(2))
         'init',
         '[WIP] initialize stackbit configuration from project files',
         (yargs) =>
-            yargs.option('input-dir', {
-                alias: 'i',
-                description: 'project dir',
-                default: '.'
-            }).option('dry-run', {
-                description: 'print configuration instead of writing it to stackbit.yaml',
-                boolean: true,
-                default: false
-            }),
+            yargs
+                .option('input-dir', {
+                    alias: 'i',
+                    description: 'project dir',
+                    default: '.'
+                })
+                .option('dry-run', {
+                    description: 'print configuration instead of writing it to stackbit.yaml',
+                    boolean: true,
+                    default: false
+                }),
         async (argv) => {
             await init({
                 inputDir: path.resolve(argv['input-dir']),

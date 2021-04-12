@@ -1,5 +1,8 @@
-import { FileBrowser, GitHubFileBrowserAdapter, matchCMS, matchSSG } from '@stackbit/sdk';
+import { analyzeSite, convertToYamlConfig, FileBrowser, GitHubFileBrowserAdapter } from '@stackbit/sdk';
+
 import { printCMSMatchResult, printSSGMatchResult } from './utils';
+import yaml from 'js-yaml';
+import chalk from 'chalk';
 
 export interface AnalyzeRepoOptions {
     repoUrl: string;
@@ -14,7 +17,7 @@ export async function analyzeRepo({ repoUrl, branch, auth }: AnalyzeRepoOptions)
         return;
     }
 
-    console.log(`Analyzing repository files in ${repoUrl} ...`);
+    console.log(`Analyzing repository files in ${repoUrl}, branch: ${branch} ...`);
     const fileBrowserAdapter = new GitHubFileBrowserAdapter({
         owner: parsedUrl.owner,
         repo: parsedUrl.repo,
@@ -22,14 +25,14 @@ export async function analyzeRepo({ repoUrl, branch, auth }: AnalyzeRepoOptions)
         auth: auth
     });
     const fileBrowser = new FileBrowser({ fileBrowserAdapter });
-    const ssgMatchResult = await matchSSG({ fileBrowser });
-    printSSGMatchResult(ssgMatchResult);
+    const analyzeResult = await analyzeSite({ fileBrowser });
 
-    if (!ssgMatchResult) {
-        return;
-    }
-    const cmsMatchResult = await matchCMS({ fileBrowser });
-    printCMSMatchResult(cmsMatchResult);
+    printSSGMatchResult(analyzeResult.ssgMatchResult);
+    printCMSMatchResult(analyzeResult.cmsMatchResult);
+
+    const yamlConfig = convertToYamlConfig({ config: analyzeResult.config });
+    const yamlString = yaml.dump(yamlConfig);
+    console.log(`\n${chalk.underline.bold('stackbit.yaml')}:\n${chalk.cyanBright(yamlString)}`);
 }
 
 function parseGitHubUrl(repoUrl: string) {
