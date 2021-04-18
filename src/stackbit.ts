@@ -39,7 +39,7 @@ yargs(process.argv.slice(2))
     )
     .command(
         'init',
-        '[WIP] initialize stackbit configuration from project files',
+        'Generates stackbit.yaml by introspecting website project files',
         (yargs) =>
             yargs
                 .option('input-dir', {

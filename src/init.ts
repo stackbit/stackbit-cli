@@ -20,5 +20,6 @@ export async function init({ inputDir, dryRun }: { inputDir: string; dryRun: boo
         console.log(`\n${chalk.underline.bold('stackbit.yaml')}:\n${chalk.cyanBright(yamlString)}`);
     } else {
         await writeConfig({ dirPath: inputDir, config: analyzeResult.config });
+        console.log(`\nThe ${chalk.cyanBright('stackbit.yaml')} file have been generated and saved at: ${path.resolve(inputDir, 'stackbit.yaml')}`)
     }
 }
