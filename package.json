@@ -1,13 +1,16 @@
 {
   "name": "@stackbit/cli",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Stackbit CLI",
   "main": "dist/stackbit.js",
   "types": "dist/stackbit.d.ts",
   "bin": {
     "stackbit": "./dist/stackbit.js"
   },
-  "files": ["/dist", "/src"],
+  "files": [
+    "/dist",
+    "/src"
+  ],
   "scripts": {
     "test": "jest",
     "build": "tsc",
