@@ -36,6 +36,12 @@ export async function validate({ inputDir, configOnly, quiet }: ValidateOptions)
         return;
     }
 
+    // do not load or validate content if cmsName is not git
+    const cmsName = configResult.config.cmsName ?? 'git';
+    if (cmsName !== 'git') {
+        return;
+    }
+
     const contentResult = await validateContent({
         dirPath: inputDir,
         config: configResult.config,
