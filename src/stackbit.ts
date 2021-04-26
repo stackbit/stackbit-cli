@@ -6,6 +6,7 @@ import yargs from 'yargs';
 import { validate } from './validate';
 import { init } from './init';
 import { analyzeRepo } from './analyze-repo';
+import * as telemetry from './telemetry';
 
 yargs(process.argv.slice(2))
     .command(
@@ -89,4 +90,18 @@ yargs(process.argv.slice(2))
             });
         }
     )
+    .command({
+        command: 'telemetry-enable',
+        describe: 'Enable telemetry',
+        handler: () => {
+            telemetry.enable();
+        }
+    })
+    .command({
+        command: 'telemetry-disable',
+        describe: 'Disable telemetry',
+        handler: () => {
+            telemetry.disable();
+        }
+    })
     .demandCommand().argv;

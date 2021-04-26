@@ -3,6 +3,7 @@ import { analyzeSite, convertToYamlConfig, FileBrowser, GitHubFileBrowserAdapter
 import { printCMSMatchResult, printSSGMatchResult } from './utils';
 import yaml from 'js-yaml';
 import chalk from 'chalk';
+import { track, EVENTS } from './telemetry';
 
 export interface AnalyzeRepoOptions {
     repoUrl: string;
@@ -11,6 +12,7 @@ export interface AnalyzeRepoOptions {
 }
 
 export async function analyzeRepo({ repoUrl, branch, auth }: AnalyzeRepoOptions) {
+    track(EVENTS.analyzeRepo);
     const parsedUrl = parseGitHubUrl(repoUrl);
     if (!parsedUrl) {
         console.log(`could not parse repository url: ${repoUrl}`);
