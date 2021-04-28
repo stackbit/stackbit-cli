@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import _ from 'lodash';
-import { CMSMatchResult, SSGMatchResult } from '@stackbit/sdk';
+import { CMSMatchResult, ConfigLoaderResult, ContentLoaderResult, SiteAnalyzerResult, SSGMatchResult } from '@stackbit/sdk';
+import { track, EVENTS } from './telemetry';
 
 export function printSSGMatchResult(ssgMatchResult: SSGMatchResult | null) {
     if (!ssgMatchResult) {
@@ -31,4 +32,37 @@ export function printCMSMatchResult(cmsMatchResult: CMSMatchResult | null) {
             console.log(`${prop}: ${chalk.cyanBright(`'${value}'`)}`);
         });
     }
+}
+
+export function trackInitResultStats(analyzeResult: SiteAnalyzerResult) {
+    track(
+        EVENTS.initResult,
+        _.omitBy(
+            {
+                ssg_name: analyzeResult.config.ssgName,
+                is_theme: analyzeResult.ssgMatchResult?.isTheme,
+                cms_name: analyzeResult.config.cmsName,
+                model_count: analyzeResult.config.models.length
+            },
+            _.isNil
+        )
+    );
+}
+
+export function trackValidateResultStats(configResult: ConfigLoaderResult, contentResult?: ContentLoaderResult) {
+    track(
+        EVENTS.validateResult,
+        _.omitBy(
+            {
+                config_valid: configResult.valid,
+                config_error_count: configResult.errors.length,
+                ssg_name: configResult.config?.ssgName,
+                cms_name: configResult.config?.cmsName,
+                content_valid: contentResult?.valid,
+                content_item_count: contentResult?.contentItems.length,
+                content_error_count: contentResult?.errors.length
+            },
+            _.isNil
+        )
+    );
 }

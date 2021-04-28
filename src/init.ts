@@ -1,11 +1,13 @@
 import path from 'path';
 import chalk from 'chalk';
 import yaml from 'js-yaml';
-import { FileSystemFileBrowserAdapter, FileBrowser, writeConfig, convertToYamlConfig, analyzeSite } from '@stackbit/sdk';
+import { analyzeSite, convertToYamlConfig, FileBrowser, FileSystemFileBrowserAdapter, writeConfig } from '@stackbit/sdk';
 
-import { printCMSMatchResult, printSSGMatchResult } from './utils';
+import { printCMSMatchResult, printSSGMatchResult, trackInitResultStats } from './utils';
+import { track, EVENTS } from './telemetry';
 
 export async function init({ inputDir, dryRun }: { inputDir: string; dryRun: boolean }) {
+    track(EVENTS.init, { dry_run: dryRun });
     console.log(`Analyzing files in ${chalk.blueBright(path.resolve(inputDir))} ...`);
     const fileBrowserAdapter = new FileSystemFileBrowserAdapter({ dirPath: inputDir });
     const fileBrowser = new FileBrowser({ fileBrowserAdapter });
@@ -13,6 +15,7 @@ export async function init({ inputDir, dryRun }: { inputDir: string; dryRun: boo
 
     printSSGMatchResult(analyzeResult.ssgMatchResult);
     printCMSMatchResult(analyzeResult.cmsMatchResult);
+    trackInitResultStats(analyzeResult);
 
     if (dryRun) {
         const yamlConfig = convertToYamlConfig({ config: analyzeResult.config });
@@ -20,6 +23,6 @@ export async function init({ inputDir, dryRun }: { inputDir: string; dryRun: boo
         console.log(`\n${chalk.underline.bold('stackbit.yaml')}:\n${chalk.cyanBright(yamlString)}`);
     } else {
         await writeConfig({ dirPath: inputDir, config: analyzeResult.config });
-        console.log(`\nThe ${chalk.cyanBright('stackbit.yaml')} file have been generated and saved at: ${path.resolve(inputDir, 'stackbit.yaml')}`)
+        console.log(`\nThe ${chalk.cyanBright('stackbit.yaml')} file have been generated and saved at: ${path.resolve(inputDir, 'stackbit.yaml')}`);
     }
 }
