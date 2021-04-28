@@ -58,6 +58,7 @@ export function trackValidateResultStats(configResult: ConfigLoaderResult, conte
                 config_error_count: configResult.errors.length,
                 ssg_name: configResult.config?.ssgName,
                 cms_name: configResult.config?.cmsName,
+                content_valid: contentResult?.valid,
                 content_item_count: contentResult?.contentItems.length,
                 content_error_count: contentResult?.errors.length
             },
