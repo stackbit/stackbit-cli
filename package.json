@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/stackbit/stackbit-cli#readme",
   "dependencies": {
-    "@stackbit/sdk": "^0.1.13",
+    "@stackbit/sdk": "^0.1.14",
     "analytics-node": "^4.0.1",
     "chalk": "^4.1.0",
     "configstore": "^5.0.1",
