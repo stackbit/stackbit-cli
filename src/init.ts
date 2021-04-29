@@ -7,7 +7,7 @@ import { printCMSMatchResult, printSSGMatchResult, trackInitResultStats } from '
 import { track, EVENTS } from './telemetry';
 
 export async function init({ inputDir, dryRun }: { inputDir: string; dryRun: boolean }) {
-    track(EVENTS.init, { dry_run: dryRun });
+    track(EVENTS.init, { dry_run: dryRun, inputDir });
     console.log(`Analyzing files in ${chalk.blueBright(path.resolve(inputDir))} ...`);
     const fileBrowserAdapter = new FileSystemFileBrowserAdapter({ dirPath: inputDir });
     const fileBrowser = new FileBrowser({ fileBrowserAdapter });
@@ -15,7 +15,7 @@ export async function init({ inputDir, dryRun }: { inputDir: string; dryRun: boo
 
     printSSGMatchResult(analyzeResult.ssgMatchResult);
     printCMSMatchResult(analyzeResult.cmsMatchResult);
-    trackInitResultStats(analyzeResult);
+    trackInitResultStats(analyzeResult, inputDir);
 
     if (dryRun) {
         const yamlConfig = convertToYamlConfig({ config: analyzeResult.config });

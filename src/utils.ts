@@ -1,7 +1,36 @@
 import chalk from 'chalk';
 import _ from 'lodash';
 import { CMSMatchResult, ConfigLoaderResult, ContentLoaderResult, SiteAnalyzerResult, SSGMatchResult } from '@stackbit/sdk';
-import { track, EVENTS } from './telemetry';
+import { track, EVENTS, trackUncaughtException } from './telemetry';
+
+let uncaughtExceptionMonitorSet = false;
+
+export function setupUncaughtExceptionHandler() {
+    if (uncaughtExceptionMonitorSet) {
+        return;
+    }
+    uncaughtExceptionMonitorSet = true;
+
+    process.on('unhandledRejection', async (error: Error) => {
+        await handleUncaughtException(error);
+    });
+    process.on('uncaughtException', async (error: Error) => {
+        await handleUncaughtException(error);
+    });
+}
+
+async function handleUncaughtException(error: Error) {
+    await trackUncaughtException({
+        error: {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+        }
+    });
+    console.error('Uh-oh! Something went wrong');
+    console.error(error);
+    process.exit(1);
+}
 
 export function printSSGMatchResult(ssgMatchResult: SSGMatchResult | null) {
     if (!ssgMatchResult) {
@@ -34,35 +63,25 @@ export function printCMSMatchResult(cmsMatchResult: CMSMatchResult | null) {
     }
 }
 
-export function trackInitResultStats(analyzeResult: SiteAnalyzerResult) {
-    track(
-        EVENTS.initResult,
-        _.omitBy(
-            {
-                ssg_name: analyzeResult.config.ssgName,
-                is_theme: analyzeResult.ssgMatchResult?.isTheme,
-                cms_name: analyzeResult.config.cmsName,
-                model_count: analyzeResult.config.models.length
-            },
-            _.isNil
-        )
-    );
+export function trackInitResultStats(analyzeResult: SiteAnalyzerResult, inputDir: string) {
+    track(EVENTS.initResult, {
+        inputDir,
+        ssg_name: analyzeResult.config.ssgName,
+        is_theme: analyzeResult.ssgMatchResult?.isTheme,
+        cms_name: analyzeResult.config.cmsName,
+        model_count: analyzeResult.config.models.length
+    });
 }
 
-export function trackValidateResultStats(configResult: ConfigLoaderResult, contentResult?: ContentLoaderResult) {
-    track(
-        EVENTS.validateResult,
-        _.omitBy(
-            {
-                config_valid: configResult.valid,
-                config_error_count: configResult.errors.length,
-                ssg_name: configResult.config?.ssgName,
-                cms_name: configResult.config?.cmsName,
-                content_valid: contentResult?.valid,
-                content_item_count: contentResult?.contentItems.length,
-                content_error_count: contentResult?.errors.length
-            },
-            _.isNil
-        )
-    );
+export function trackValidateResultStats(configResult: ConfigLoaderResult, contentResult: ContentLoaderResult | null, inputDir: string) {
+    track(EVENTS.validateResult, {
+        inputDir,
+        config_valid: configResult.valid,
+        config_error_count: configResult.errors.length,
+        ssg_name: configResult.config?.ssgName,
+        cms_name: configResult.config?.cmsName,
+        content_valid: contentResult?.valid,
+        content_item_count: contentResult?.contentItems.length,
+        content_error_count: contentResult?.errors.length
+    });
 }

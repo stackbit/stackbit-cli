@@ -7,6 +7,9 @@ import { validate } from './validate';
 import { init } from './init';
 import { analyzeRepo } from './analyze-repo';
 import * as telemetry from './telemetry';
+import { setupUncaughtExceptionHandler } from './utils';
+
+setupUncaughtExceptionHandler();
 
 yargs(process.argv.slice(2))
     .command(

@@ -16,7 +16,7 @@ interface ValidateOptions {
 }
 
 export async function validate({ inputDir, configOnly, quiet }: ValidateOptions) {
-    track(EVENTS.validate, { config_only: configOnly, quiet });
+    track(EVENTS.validate, { config_only: configOnly, quiet, inputDir });
     const quietConsole = getQuietConsole({ quiet });
     quietConsole.debug(`loading and validating Stackbit configuration from: ${inputDir}`);
 
@@ -37,14 +37,14 @@ export async function validate({ inputDir, configOnly, quiet }: ValidateOptions)
     quietConsole.groupEnd();
 
     if (configOnly || !configResult.config) {
-        trackValidateResultStats(configResult);
+        trackValidateResultStats(configResult, null, inputDir);
         return;
     }
 
     // do not load or validate content if cmsName is not git
     const cmsName = configResult.config.cmsName ?? 'git';
     if (cmsName !== 'git') {
-        trackValidateResultStats(configResult);
+        trackValidateResultStats(configResult, null, inputDir);
         return;
     }
 
@@ -55,7 +55,7 @@ export async function validate({ inputDir, configOnly, quiet }: ValidateOptions)
         skipUnmodeledContent: false
     });
 
-    trackValidateResultStats(configResult, contentResult);
+    trackValidateResultStats(configResult, contentResult, inputDir);
     if (configResult.errors.length === 0 && contentResult.errors.length === 0) {
         console.log(green('✔ validation passed'));
     } else {

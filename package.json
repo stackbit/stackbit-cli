@@ -42,6 +42,7 @@
     "analytics-node": "^4.0.1",
     "chalk": "^4.1.0",
     "configstore": "^5.0.1",
+    "git-url-parse": "^11.4.4",
     "js-yaml": "^4.0.0",
     "lodash": "^4.17.21",
     "uuid": "^8.3.2",
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@types/analytics-node": "^3.1.4",
     "@types/configstore": "^5.0.0",
+    "@types/git-url-parse": "^9.0.0",
     "@types/js-yaml": "^4.0.0",
     "@types/lodash": "^4.14.168",
     "@types/uuid": "^8.3.0",
