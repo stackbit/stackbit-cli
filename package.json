@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "prettier": "prettier --write src",
     "prepack": "npm test && npm run build",
     "version-minor": "npm version minor -m \"bumped version to v%s\"",
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/stackbit/stackbit-cli#readme",
   "dependencies": {
-    "@stackbit/sdk": "^0.1.15",
+    "@stackbit/sdk": "^0.1.16",
     "analytics-node": "^4.0.1",
     "chalk": "^4.1.0",
     "configstore": "^5.0.1",
