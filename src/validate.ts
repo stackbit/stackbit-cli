@@ -25,6 +25,18 @@ export async function validate({ inputDir, configOnly, quiet }: ValidateOptions)
     });
 
     quietConsole.group();
+
+    const models = configResult.config?.models ?? [];
+    console.group(`loaded ${models.length} models:`);
+    (configResult.config?.models ?? []).forEach((model) => {
+        if (model.__metadata?.invalid) {
+            console.log(red(`✘ ${model.name} - invalid model`));
+        } else {
+            console.log(green(`✔ ${model.name}`));
+        }
+    });
+    console.groupEnd();
+
     if (configResult.errors.length === 0) {
         console.log(green('✔ configuration is valid'));
     } else {
