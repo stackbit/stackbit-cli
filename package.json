@@ -38,26 +38,26 @@
   },
   "homepage": "https://github.com/stackbit/stackbit-cli#readme",
   "dependencies": {
-    "@stackbit/sdk": "^0.2.14",
+    "@stackbit/sdk": "^0.2.15",
     "analytics-node": "^4.0.1",
     "chalk": "^4.1.0",
     "configstore": "^5.0.1",
     "git-url-parse": "^11.4.4",
-    "js-yaml": "^4.0.0",
+    "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "uuid": "^8.3.2",
-    "yargs": "^16.2.0"
+    "yargs": "^17.2.1"
   },
   "devDependencies": {
-    "@types/analytics-node": "^3.1.4",
-    "@types/configstore": "^5.0.0",
-    "@types/git-url-parse": "^9.0.0",
-    "@types/js-yaml": "^4.0.0",
-    "@types/lodash": "^4.14.168",
-    "@types/uuid": "^8.3.0",
-    "jest": "^26.6.3",
-    "prettier": "^2.2.1",
-    "ts-jest": "^26.5.3",
-    "typescript": "^4.2.3"
+    "@types/analytics-node": "^3.1.7",
+    "@types/configstore": "^5.0.1",
+    "@types/git-url-parse": "^9.0.1",
+    "@types/js-yaml": "^4.0.4",
+    "@types/lodash": "^4.14.176",
+    "@types/uuid": "^8.3.1",
+    "jest": "^27.3.1",
+    "prettier": "^2.4.1",
+    "ts-jest": "^27.0.7",
+    "typescript": "^4.4.4"
   }
 }
