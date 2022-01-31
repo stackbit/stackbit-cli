@@ -29,6 +29,9 @@ export async function validate({ inputDir, configOnly, quiet }: ValidateOptions)
     const models = configResult.config?.models ?? [];
     console.group(`loaded ${models.length} models:`);
     (configResult.config?.models ?? []).forEach((model) => {
+        if (model.name === '__image_model') {
+            return;
+        }
         if (model.__metadata?.invalid) {
             console.log(red(`✘ ${model.name} - invalid model`));
         } else {
@@ -119,7 +122,7 @@ async function validateContent({ dirPath, config, quiet, skipUnmodeledContent }:
         console.log(green('✔ content files are valid'));
     } else {
         console.group(red(`found ${result.errors.length} errors in content files:`));
-        result.errors.forEach((error) => {
+        result.errors.forEach((error: Error) => {
             if (error instanceof ContentValidationError) {
                 console.log(`${redCross} ${error.filePath} (${error.modelName}): ${error.message}`);
             } else {
