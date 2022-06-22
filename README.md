@@ -3,7 +3,7 @@
 ## Documentation
 
 To learn more about Stackbit CLI please visit
-[documentation](https://docs.stackbit.com/how-to-guides/site-management/integrate-stackbit/#install_stackbit_cli)
+[documentation](https://docs.stackbit.com/reference/stackbit-cli/)
 
 ## Install
 
