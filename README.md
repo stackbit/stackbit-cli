@@ -2,7 +2,8 @@
 
 ## Documentation
 
-To learn more about Stackbit CLI please visit [documentation](https://www.stackbit.com/docs/stackbit-cli/)
+To learn more about Stackbit CLI please visit
+[documentation](https://docs.stackbit.com/reference/stackbit-cli/)
 
 ## Install
 
